@@ -1,0 +1,47 @@
+{% if user.is_authenticated %}
+{% if user.groups.all.0.name == "customer" %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Your Bill</h2>
+
+    {% if orders %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark text-light">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Order Date</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.item.item_name }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>Rs.{{ order.item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h4 class="text-end mt-3"><strong>Total Amount: Rs.{{ total_amount }}</strong></h4>
+
+    {% else %}
+    <p class="text-center text-muted">No purchases found.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'firstapp:home' %}" class="btn btn-secondary">Go to Home</a>
+    </div>
+</div>
+{% endblock %}
+{% endif %}
+{% endif %}

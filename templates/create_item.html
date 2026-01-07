@@ -1,0 +1,14 @@
+{% if user.is_authenticated %}
+{% if user.groups.all.0.name == "shopkeeper" %}
+ 
+{% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+
+<div class="container mt-4">
+  <form method="POST" enctype="multipart/form-data" class="p-3 border rounded">
+    {% csrf_token %} {{ form.as_p }}
+
+    <button type="submit" class="btn btn-secondary">Submit</button>
+  </form>
+</div>
+{% endif %}
+{% endif %}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body style="background-color: #f8f9fa; font-family: Arial, sans-serif;">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">GO TO HOME</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Welcome, {{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-danger text-white px-3" href="{% url 'firstapp:logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white px-3" href="{% url 'firstapp:login' %}">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+   
+        {% if user.is_authenticated %}
+            {% if user.groups.all.0.name == "shopkeeper" %}
+            <div class="container mt-4">
+                <div class="card border-0 p-4" style="background-color: #f8f9fa;">
+                    <h2 class="text-center mb-4 text-dark">Welcome to the SHOP</h2>
+            
+                    <!-- Manage Items Section -->
+                    <div class="card border-0 p-3 mb-4" style="background-color: #e9ecef;">
+                        <h2 class="text-center mb-4 text-dark">B.TECH SHOP</h2>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            
+                            <a href="{% url 'firstapp:create_item' %}" class="btn btn-success px-3 py-2">Add Item</a>
+                            <a href="{% url 'firstapp:list_item' %}" class="btn btn-primary px-3 py-2">View All Items</a>
+                            <a href="{% url 'firstapp:item_less_than' %}" class="btn btn-warning px-3 py-2">Out Of Stock Items</a>
+                            <a href="{% url 'firstapp:list_customer' %}" class="btn btn-info px-3 py-2">Customer List</a>
+                        </div>
+                    </div>
+            
+                    <div class="card p-4">
+                        <form action="sub" method="post">
+                            {% csrf_token %}
+                            <label class="form-label fw-bold">Enter Customer Name:</label>
+                            <input type="text" name="num1" class="form-control mb-3" placeholder="Enter Customer Name">
+                            <button type="submit" class="btn btn-primary w-100">Search</button>
+                        </form>
+                    </div>
+            
+                    <!-- Customer Details Table -->
+                    <h3 class="text-center mt-4">Customer Details</h3>
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>All-Time Purchase</th>
+                                    <th>Today's Purchase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in data %}
+                                <tr>
+                                    <td>{{ data.username }}</td>
+                                    <td>{{ data.email }}</td>
+                                    <td><a href="{% url 'firstapp:alltime_purchase' data.username %}" class="btn btn-warning px-3 py-1">View</a></td>
+                                    <td><a href="{% url 'firstapp:bill' data.username %}" class="btn btn-info px-3 py-1">View</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+             
+            {% endif %}
+
+
+
+            <div class="container mt-5">            
+                {% if user.groups.all.0.name == "customer" %}
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-8">
+                            <div class="card border">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title">Create a New Order</h4>
+                                    <p class="card-text">Browse and purchase available items.</p>
+                                    <a href="{% url 'firstapp:order_page' %}" class="btn btn-success w-100">Go to Orders</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-8 mt-4 mt-lg-0">
+                            <div class="card border">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title">View Purchase History</h4>
+                                    <p class="card-text">Check all your previous purchases.</p>
+                                    <a href="{% url 'firstapp:customer_alltime' %}" class="btn btn-info w-100">View Purchases</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-8 mt-4">
+                            <div class="card border">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title">View Today's Bill</h4>
+                                    <p class="card-text">See your current day's purchases.</p>
+                                    <a href="{% url 'firstapp:customer_bill' %}" class="btn btn-warning w-100">Go to Bill</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

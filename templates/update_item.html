@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+{% if user.groups.all.0.name == "shopkeeper" %}
+{% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+
+<div class="container mt-4">
+  <div class="card p-3">
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+
+      <button type="submit" class="btn btn-secondary">Update</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endif %}

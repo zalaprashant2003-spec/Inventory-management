@@ -1,0 +1,31 @@
+{% if user.is_authenticated %}
+{% if user.groups.all.0.name == "shopkeeper" %}
+
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+<div class="container mt-4">
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in dataset %}
+      <tr>
+        <td>{{ data.username }}</td>
+        <td>{{ data.email }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="text-center mt-4">
+    <a href="{% url 'firstapp:home' %}" class="btn btn-secondary">Go to Home</a>
+</div>
+{% endif %}
+{% endif %}

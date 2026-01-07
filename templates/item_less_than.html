@@ -1,0 +1,38 @@
+{% if user.is_authenticated %}
+{% if user.groups.all.0.name == "shopkeeper" %}
+ 
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<div class="container mt-4">
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Item Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Order</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in dataset %}
+      <tr>
+        <td>{{ data.id }}</td>
+        <td>{{ data.item_name }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.quantity }}</td>
+        <td>
+          <a href="{% url 'firstapp:update_item' data.id %}" class="btn btn-secondary btn-sm">Order</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="text-center mt-4">
+    <a href="{% url 'firstapp:home' %}" class="btn btn-secondary">Go to Home</a>
+</div>
+</div>
+{% endif %}
+{% endif %}
